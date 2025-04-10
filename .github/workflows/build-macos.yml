@@ -8,9 +8,9 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-      
-      - name: Upload artifact test
-        uses: actions/upload-artifact@v2.3.1
+        
+      - name: Upload test file
+        uses: actions/upload-artifact@v2
         with:
-          name: test-file
+          name: test-artifact
           path: README.md
