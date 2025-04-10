@@ -21,19 +21,20 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          # 根据需要安装打包工具，这里示例使用 PyInstaller
+          # 安装打包工具（此处以 PyInstaller 为例）
           pip install pyinstaller
 
       - name: Build .app using PyInstaller
         run: |
           # 请将 unzip_win.py 替换为你的实际入口脚本文件名
           pyinstaller --windowed --onefile unzip_win.py
-          # 如果使用 py2app，则可更改为：
+          # 如果使用 py2app，则需要：
           # pip install py2app
           # python setup.py py2app
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v2.3.1
+        # 使用具体 commit SHA 来避免版本解析问题
+        uses: actions/upload-artifact@d8b0d7271693d0cb22e9ea5e4d5ac646690e4aae
         with:
           name: macos-build
-          path: dist/  # 根据实际生成目录进行调整
+          path: dist/  # 根据生成的实际路径进行调整
