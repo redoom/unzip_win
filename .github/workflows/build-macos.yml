@@ -37,7 +37,7 @@ jobs:
 
       # 第五步：上传打包产物
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: macOS_app
           path: dist/
