@@ -1,0 +1,35 @@
+name: Build macOS App
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"  # 根据你的项目需要选择版本
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build executable using PyInstaller
+        run: |
+          # 假设 unzip_win.py 是入口脚本，加上 --windowed 参数适用于 GUI 应用，如无界面则去掉
+          pyinstaller --windowed --onefile unzip_win.py
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: macos-build
+          path: dist/  # 默认 PyInstaller 将生成的可执行文件放在 dist 目录下
