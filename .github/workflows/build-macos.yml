@@ -1,43 +1,16 @@
-name: Build for macOS
+name: Test Upload Artifact
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: [push]
 
 jobs:
-  build-macos:
-    runs-on: macos-latest
-
+  test-artifact:
+    runs-on: ubuntu-latest
     steps:
-      # 第一步：检出代码，否则后续找不到项目文件
       - name: Check out code
         uses: actions/checkout@v2
-
-      # 第二步：设置 Python 版本
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      
+      - name: Upload artifact test
+        uses: actions/upload-artifact@v2.3.1
         with:
-          python-version: '3.12'
-
-      # 第三步：安装依赖
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pyinstaller
-
-      # 第四步：使用 PyInstaller 打包
-      - name: Build the app
-        run: |
-          # 如果是命令行程序，不需要窗口，可以去掉 --windowed
-          # 如果你想给可执行文件起一个特别的名字，可以用 --name。
-          pyinstaller --onefile --windowed unzip_win.py
-
-      # 第五步：上传打包产物
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: macOS_app
-          path: dist/
+          name: test-file
+          path: README.md
