@@ -13,11 +13,11 @@ jobs:
     steps:
       # 第一步：检出代码，否则后续找不到项目文件
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       # 第二步：设置 Python 版本
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v2
         with:
           python-version: '3.9'
 
@@ -37,7 +37,7 @@ jobs:
 
       # 第五步：上传打包产物
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: macOS_app
           path: dist/
