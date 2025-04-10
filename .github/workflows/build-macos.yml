@@ -6,36 +6,33 @@ on:
       - main
   pull_request:
 
+permissions:
+  actions: read
+  contents: read
+
 jobs:
   build-macos:
     runs-on: macos-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: "3.9"  # 根据需要选择 Python 版本
+          python-version: "3.9"
 
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          # 安装打包工具（此处以 PyInstaller 为例）
           pip install pyinstaller
 
       - name: Build .app using PyInstaller
         run: |
-          # 请将 unzip_win.py 替换为你的实际入口脚本文件名
           pyinstaller --windowed --onefile unzip_win.py
-          # 如果使用 py2app，则可以使用：
-          # pip install py2app
-          # python setup.py py2app
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: macos-build
-          path: dist/  # 根据实际生成的目录进行调整
+          path: dist/
