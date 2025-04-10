@@ -1,38 +1,43 @@
-name: Build macOS App
+name: Build for macOS
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   pull_request:
-
-permissions:
-  actions: read
-  contents: read
+    branches: [ "main" ]
 
 jobs:
   build-macos:
     runs-on: macos-latest
+
     steps:
-      - name: Checkout code
+      # 第一步：检出代码，否则后续找不到项目文件
+      - name: Check out code
         uses: actions/checkout@v2
 
+      # 第二步：设置 Python 版本
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: "3.9"
+          python-version: '3.9'
 
+      # 第三步：安装依赖
       - name: Install dependencies
         run: |
+          pip install --upgrade pip
           pip install -r requirements.txt
           pip install pyinstaller
 
-      - name: Build .app using PyInstaller
+      # 第四步：使用 PyInstaller 打包
+      - name: Build the app
         run: |
-          pyinstaller --windowed --onefile unzip_win.py
+          # 如果是命令行程序，不需要窗口，可以去掉 --windowed
+          # 如果你想给可执行文件起一个特别的名字，可以用 --name。
+          pyinstaller --onefile --windowed unzip_win.py
 
-      - name: Upload Artifact
+      # 第五步：上传打包产物
+      - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: macos-build
+          name: macOS_app
           path: dist/
