@@ -16,7 +16,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: "3.12"  # 根据需要选择 Python 版本
+          python-version: "3.9"  # 根据需要选择 Python 版本
 
       - name: Install dependencies
         run: |
@@ -33,7 +33,7 @@ jobs:
           # python setup.py py2app
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v2.3.1
         with:
           name: macos-build
           path: dist/  # 根据实际生成目录进行调整
