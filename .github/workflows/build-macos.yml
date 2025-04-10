@@ -33,7 +33,7 @@ jobs:
           # python setup.py py2app
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: macos-build
           path: dist/  # 路径根据生成的文件进行调整
