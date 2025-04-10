@@ -16,20 +16,24 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: "3.9"  # 根据你的项目需要选择版本
+          python-version: "3.9"  # 根据需要选择 Python 版本
 
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+          # 根据需要安装打包工具，假设这里使用 PyInstaller
           pip install pyinstaller
 
-      - name: Build executable using PyInstaller
+      - name: Build .app using PyInstaller
         run: |
-          # 假设 unzip_win.py 是入口脚本，加上 --windowed 参数适用于 GUI 应用，如无界面则去掉
+          # 将 your_script.py 替换成你的入口脚本文件名，例如 unzip_win.py
           pyinstaller --windowed --onefile unzip_win.py
+          # 如果你使用 py2app，则需要：
+          # pip install py2app
+          # python setup.py py2app
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: macos-build
-          path: dist/  # 默认 PyInstaller 将生成的可执行文件放在 dist 目录下
+          path: dist/  # 路径根据生成的文件进行调整
