@@ -1,16 +1,45 @@
-name: Test Upload Artifact
+name: Build for macOS
 
-on: [push]
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
-  test-artifact:
-    runs-on: ubuntu-latest
+  build-macos:
+    # 使用 GitHub 提供的 macOS Runner（如果你真的需要用 macos-latest）
+    runs-on: macos-latest
+
     steps:
-      - name: Checkout code
+      # 1. 检出代码
+      - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Upload test file
+      # 2. 设置 Python 版本（这里使用 Python 3.9，可根据需要修改）
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      # 3. 安装依赖，包括升级 pip、安装 requirements 里的包和 pyinstaller
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      # 4. 打包应用
+      - name: Build the app
+        run: |
+          # 这里使用 --onefile 打包单文件执行版，如果需要生成完整的 .app 格式，可去掉 --onefile
+          pyinstaller --onefile --windowed --name MyApp unzip_win.py
+
+      # 5. 上传打包好的产物（这里上传 dist/ 文件夹下的内容）
+      # 如果遇到版本解析问题可以尝试使用 commit SHA，比如：
+      #   uses: actions/upload-artifact@ee2951e00b4db95320d1c6051cf62a07670d87ec
+      - name: Upload artifact
         uses: actions/upload-artifact@v2.3.1
         with:
-          name: test-artifact
-          path: README.md
+          name: macOS_app
+          path: dist/
